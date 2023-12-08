@@ -24,7 +24,14 @@ cd ARIAC_evaluation/docker && \
 DOCKER_BUILDKIT=1 docker build -t ariac2024_image -f Dockerfile .
 ```
 
-3. To run automated evaluation, run:
+3. To run automated evaluation with nvidia capabilities, run:
+```
+cd ARIAC_evaluation/automated_evaluation && \
+./build_container.sh nist_competitor nvidia
+```
+
+3.1 To run automated evaluation with nvidia capabilities, run:
+
 ```
 cd ARIAC_evaluation/automated_evaluation && \
 ./build_container.sh nist_competitor
