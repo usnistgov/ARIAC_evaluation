@@ -1,0 +1,17 @@
+# team configuration for automated evaluation
+
+team_name: "nist_competitor"
+
+github:
+  repository: "github.com/jaybrecht/nist_competitor.git"
+  personal_access_token: "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"
+
+build:
+  debian_packages: []
+  pip_packages: []
+  extra_build_scripts: []
+
+competition:
+  package_name: "nist_competitor"
+  launch_file: "competition.launch.py"
+
