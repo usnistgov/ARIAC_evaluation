@@ -15,18 +15,32 @@ fi
 #enable local connections to docker
 xhost +local:docker
 
-nvidia = 'nvidia'
+# nvidia = 'nvidia'
 
-if [$2 -eq $nvidia] ; then
-    # Build the docker image
-    docker run -t -d --name $teamName --shm-size=4gb -e DISPLAY=:0 -e LOCAL_USER_ID=1000  --gpus=all --runtime=nvidia --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw ariac2024_image:latest
-else
-    # Build the docker image
-    docker run -t -d --name $teamName --shm-size=4gb -e DISPLAY=:0 -e LOCAL_USER_ID=1000  --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw ariac2024_image:latest
-fi
+# if [$2 -eq $nvidia] ; then
+#     # Build the docker image
+#     docker run -t -d --name $teamName --shm-size=4gb -e DISPLAY=:0 -e LOCAL_USER_ID=1000  --gpus=all --runtime=nvidia --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw ariac2024_image:latest
+# else
+#     # Build the docker image
+#     docker run -t -d --name $teamName --shm-size=4gb -e DISPLAY=:0 -e LOCAL_USER_ID=1000  --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw ariac2024_image:latest
+# fi
 
 # Start the container
-#docker run -t -d --name $teamName --shm-size=4gb -e DISPLAY=:0 -e LOCAL_USER_ID=1000  --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw ariac2024_image:latest
+docker run -it \
+ -d \
+ --name $teamName \
+ --shm-size=4gb \
+ -e DISPLAY=$DISPLAY \
+ -e LOCAL_USER_ID=1000 \ 
+ --network=host \
+ --pid=host \
+ --privileged \
+ -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+ --gpus=all \
+ --runtime=nvidia \
+ -e "NVIDIA_DRIVER_CAPABILITIES=all" \
+ ariac2024_image:latest
+
 
 # Copy scripts directory and yaml file
 docker cp ./scripts/ $teamName:/
