@@ -2,8 +2,9 @@
 
 ## Prerequisites
 
-1. Install or update Nvidia drivers.
-2. To enable Nvidia capabilities in docker, install the following package:
+1. Platform: Ubuntu 20/22
+2. Install or update Nvidia drivers.
+3. To enable Nvidia capabilities in docker, install the following package:
    - [Nvidia Container ToolKit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 
