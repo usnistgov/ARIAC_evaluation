@@ -50,8 +50,6 @@ def main():
     sorted_by_mtime_descending = sorted(files, key=lambda t: -os.stat(t).st_mtime)[0]
     while True:
         if os.path.exists(f'{sorted_by_mtime_descending}/score.txt'):
-            #docker cp $teamName:/workspace/src/ARIAC/ariac_log/sorted_by_mtime_descending/* /home/sahruday/ARIAC_evaluation/*
-            process.kill()
             break
 
     print(f"==== Trial {trial_name} completed")
