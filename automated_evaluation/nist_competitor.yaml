@@ -4,7 +4,7 @@ team_name: "nist_competitor"
 
 github:
   repository: "github.com/jaybrecht/nist_competitor.git"
-  personal_access_token: "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"
+  personal_access_token: "****"
 
 build:
   debian_packages: []
