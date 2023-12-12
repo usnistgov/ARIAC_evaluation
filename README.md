@@ -15,18 +15,17 @@
 git clone https://github.com/usnistgov/ARIAC_evaluation.git
 ```
 
-2. Build the docker image with Nvidia capabilities:
-```
-cd ARIAC_evaluation/docker && \
-docker build -t ariac2024_image -f iron-cuda Dockerfile .
-```
-2.1 If you want to build the docker image without Nvidia capabilities, run:
+1. Build the docker image
 ```
 cd ARIAC_evaluation/docker && \
 docker build -t ariac2024_image -f Dockerfile .
 ```
 
-3. To run automated evaluation with nvidia capabilities, run:
+```
+docker pull nistariac/ariac2024:dev```
+```
+
+1. To run automated evaluation with nvidia capabilities, run:
 ```
 cd ARIAC_evaluation/automated_evaluation && \
 ./build_container.sh nist_competitor nvidia
