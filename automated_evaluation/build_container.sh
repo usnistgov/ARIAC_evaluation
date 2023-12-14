@@ -5,12 +5,7 @@ if [[ ! $1 ]] ; then
     exit 1
 fi
 
-teamName=$(python3 get_team_name.py $1)
-
-if [[ ! $teamName ]] ; then
-    echo "Team name not found" 
-    exit 1
-fi
+teamName=$1
 
 #enable local connections to docker
 xhost +local:docker
@@ -24,10 +19,10 @@ else
 fi
 
 # Copy scripts directory and yaml file
-docker cp ./scripts/ $teamName:/
-docker cp ./competitor_build_scripts/ $teamName:/
+docker cp ./container_scripts/ $teamName:/
+docker cp ./competitor_configs/competitor_build_scripts/ $teamName:/
 docker cp ./trials/ $teamName:/
-docker cp ./$1.yaml $teamName:/scripts
+docker cp ./competitor_configs/$1.yaml $teamName:/container_scripts
 
 # Run build script
-docker exec -it $teamName bash -c ". /scripts/build_environment.sh $1"
+docker exec -it $teamName bash -c ". /container_scripts/build_environment.sh $1"

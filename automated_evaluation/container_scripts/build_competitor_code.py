@@ -13,7 +13,7 @@ def main():
         exit()
     yaml_file = sys.argv[1] + '.yaml'
     print(f'running {yaml_file}')
-
+    
     if not os.path.isfile(yaml_file):
         print(f'{yaml_file} not found')
         exit()
@@ -77,7 +77,8 @@ def main():
     subprocess.run(rosdep_cmd, shell=True)
 
     # Build the workspace
-    subprocess.run("colcon build --parallel-workers 1", shell=True)
+    build_cmd = f"colcon build --packages-select {team_name}"
+    subprocess.run(build_cmd, shell=True)
 
 
 if __name__=="__main__":

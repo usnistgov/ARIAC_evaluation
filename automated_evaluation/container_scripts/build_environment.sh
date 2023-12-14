@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /scripts/
+cd /container_scripts/
 
 chmod +x build_competitor_code.py
 
