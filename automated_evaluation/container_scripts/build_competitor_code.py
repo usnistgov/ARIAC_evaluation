@@ -40,30 +40,40 @@ def main():
         sys.exit()
 
     try:
+        tag = data["github"]["tag"]
+    except KeyError:
+        print("No tag specified, using main")
+        tag = ""
+
+    try:
         team_name = data["team_name"]
     except KeyError:
         print("Unable to find package_name")
         sys.exit()
     
     # Clone the repository
-    clone_cmd = f"git clone https://{token}@{repository} /workspace/src/{team_name}"
+    if not tag:
+        clone_cmd = f"git clone https://{token}@{repository} /workspace/src/{team_name}"
+    else:
+        clone_cmd = f"git clone https://{token}@{repository} /workspace/src/{team_name} --branch {tag}"
+    
     subprocess.run(clone_cmd, shell=True)
 
     # Install extra packages
-    for package in data["build"]["debian_packages"]:
-        install_cmd = f"apt-get install {package} -y"
-        subprocess.run(install_cmd, shell=True)
+    # for package in data["build"]["debian_packages"]:
+    #     install_cmd = f"apt-get install {package} -y"
+    #     subprocess.run(install_cmd, shell=True)
         
-    if data["build"]["pip_packages"]:
-        subprocess.run('apt install python3-pip -y' ,shell=True)
+    # if data["build"]["pip_packages"]:
+    #     subprocess.run('apt install python3-pip -y' ,shell=True)
     
-    for package in data["build"]["pip_packages"]:
-        pip_command=f"yes | pip3 install {package}"
-        subprocess.run(pip_command,shell=True)
+    # for package in data["build"]["pip_packages"]:
+    #     pip_command=f"yes | pip3 install {package}"
+    #     subprocess.run(pip_command,shell=True)
 
     # Run custom build scripts
     os.chdir('/competitor_build_scripts')
-    for script in data["build"]["extra_build_scripts"]:
+    for script in data["build"]["pre_build_scripts"]:
         subprocess.run(f"chmod +x {script}", shell=True)
         subprocess.run(f"./{script}", shell=True)
 
