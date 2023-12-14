@@ -55,10 +55,13 @@ def main():
     
     while True:
         if os.path.exists(f'{sorted_by_mtime_descending}/score.txt'):
-            ##check tmp directory exists if it exists empty the temp directory if doesnot exist create one  
-            shutil.move(f'{sorted_by_mtime_descending}/score.txt', '/tmp/score.txt')
-            shutil.move(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
-            ##check copy fuction instead of move exists.
+            if os.path.exists('/tmp/score.txt'):
+                os.remove('/tmp/score.txt')
+            if os.path.exists('/tmp/sensor_cost.txt'):
+                os.remove('/tmp/sensor_cost.txt')
+            shutil.copy(f'{sorted_by_mtime_descending}/score.txt', '/tmp/score.txt')
+            shutil.copy(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
+            
             break
 
     print(f"==== Trial {trial_name} completed")
