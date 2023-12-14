@@ -3,10 +3,13 @@
 import os
 import sys
 from subprocess import Popen, call
-from signal import SIGINT
+from signal import SIGINT, SIGTERM
 import yaml
 import time
 import glob
+import subprocess
+import shutil
+
 def main():
     # Get team file name
     yaml_file = sys.argv[1] + '.yaml'
@@ -43,25 +46,35 @@ def main():
     process = Popen(["ros2", "launch", package_name, launch_file, f"competitor_pkg:={package_name}",
                     f"trial_name:={trial_name}", '--noninteractive'])
 
+    
     # Continue execution of trial until log file is generated
     time.sleep(10)
 
     files = glob.glob(os.path.expanduser("/workspace/src/ARIAC/ariac_log/*"))
     sorted_by_mtime_descending = sorted(files, key=lambda t: -os.stat(t).st_mtime)[0]
+    
     while True:
         if os.path.exists(f'{sorted_by_mtime_descending}/score.txt'):
+            if os.path.exists('/tmp/score.txt'):
+                os.remove('/tmp/score.txt')
+            if os.path.exists('/tmp/sensor_cost.txt'):
+                os.remove('/tmp/sensor_cost.txt')
+            shutil.copy(f'{sorted_by_mtime_descending}/score.txt', '/tmp/score.txt')
+            shutil.copy(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
+            
             break
 
     print(f"==== Trial {trial_name} completed")
 
-    process.send_signal(SIGINT)
-    
+    # process.send_signal(SIGTERM)
+    process.kill()
     # Might raise a TimeoutExpired if it takes too long
     return_code = process.wait(timeout=10)
     print(f"return_code: {return_code}")
-    
-    
-
 
 if __name__ == "__main__":
     main()
+
+# ros2 topic echo --once /ariac/trial_config
+
+# ros2 topic echo --once /clock

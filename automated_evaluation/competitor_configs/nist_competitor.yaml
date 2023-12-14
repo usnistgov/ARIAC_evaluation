@@ -3,13 +3,12 @@
 team_name: "nist_competitor"
 
 github:
-  repository: "github.com/jaybrecht/nist_competitor.git"
+  repository: "github.com/usnistgov/nist_competitor.git"
+  tag: "2024.1.0"
   personal_access_token: "****"
 
 build:
-  debian_packages: []
-  pip_packages: []
-  extra_build_scripts: []
+  pre_build_scripts: ["nist_competitor_pre_build.sh"]
 
 competition:
   package_name: "nist_competitor"

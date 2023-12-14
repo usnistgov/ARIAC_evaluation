@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /scripts
+cd /container_scripts
 
 chmod +x run_trial.py
 
