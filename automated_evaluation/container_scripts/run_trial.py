@@ -55,16 +55,14 @@ def main():
     
     while True:
         if os.path.exists(f'{sorted_by_mtime_descending}/score.txt'):
-            shutil.move(f'{sorted_by_mtime_descending}/score.txt', '/workspace/src/score.txt')
-            shutil.move(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/workspace/src/sensor_cost.txt')
+            ##check tmp directory exists if it exists empty the temp directory if doesnot exist create one  
+            shutil.move(f'{sorted_by_mtime_descending}/score.txt', '/tmp/score.txt')
+            shutil.move(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
+            ##check copy fuction instead of move exists.
             break
 
     print(f"==== Trial {trial_name} completed")
 
-    # echo_cmd = f"cat {sorted_by_mtime_descending}/score.txt"
-    # subprocess.run(echo_cmd, shell=True)
-    # mv_cmd = f"mv {sorted_by_mtime_descending}/score.txt /workspace/score.txt"
-    # subprocess.run(mv_cmd, shell=True)
     # process.send_signal(SIGTERM)
     process.kill()
     # Might raise a TimeoutExpired if it takes too long

@@ -11,17 +11,18 @@ fi
 teamName=$1
 
 # Create a folder to copy log files from docker
-if [ ! -d /$PWD/ariac2024/logs/$teamName ]; then
-  mkdir -p /$PWD/ariac2024/logs/$teamName;
+if [ ! -d /$PWD/logs/$teamName ]; then
+  mkdir -p /$PWD/logs/$teamName/;
 fi
 
 
 if [[ $2 ]] ; then
+##check directory exists with the current trail name if not create folder trialname_{trialnum} if exists create folder trialname_2
     echo "==== Running trial: $2"
     docker exec -it $teamName bash -c ". /container_scripts/run_trial.sh $1 $2"
     echo "==== Copying logs to"
-    docker cp $teamName:/workspace/src/score.txt $PWD/ariac2024/logs/$teamName/score.txt
-    docker cp $teamName:/workspace/src/sensor_cost.txt $PWD/ariac2024/logs/$teamName/sensor_cost.txt
+    docker cp $teamName:/tmp/score.txt $PWD/logs/$teamName/score.txt
+    docker cp $teamName:/tmp/sensor_cost.txt $PWD/logs/$teamName/sensor_cost.txt
 fi
 
 if [[ ! $2 ]] ; then
