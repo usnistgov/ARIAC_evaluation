@@ -15,7 +15,7 @@
 git clone https://github.com/usnistgov/ARIAC_evaluation.git
 ```
 
-1. Build the docker image
+2. Build the docker image
 ```
 cd ARIAC_evaluation/docker && \
 docker build -t ariac2024_image -f Dockerfile .
@@ -25,13 +25,13 @@ docker build -t ariac2024_image -f Dockerfile .
 docker pull nistariac/ariac2024:dev```
 ```
 
-1. To run automated evaluation with nvidia capabilities, run:
+3.1 To run automated evaluation with nvidia capabilities, run:
 ```
 cd ARIAC_evaluation/automated_evaluation && \
 ./build_container.sh nist_competitor nvidia
 ```
 
-3.1 To run automated evaluation with nvidia capabilities, run:
+3.2 To run automated evaluation with nvidia capabilities, run:
 
 ```
 cd ARIAC_evaluation/automated_evaluation && \

@@ -14,10 +14,13 @@ WORKDIR /workspace
 RUN mkdir -p /workspace/src
 
 RUN source /opt/ros/iron/setup.bash && \
+    apt-get update -qq && \
+    apt-get install python3-pip -y && \
+    pip install setuptools==58.2.0 && \
     cd /workspace/src && \
     git clone https://github.com/usnistgov/ARIAC.git -b logging_updates && \
     cd /workspace && \
-    sudo apt update -qq && \
     sudo rosdep update && \
     rosdep install --from-paths src --ignore-src -y && \
+    rm -r /workspace/src/ARIAC/ariac_gazebo/config/trials && \
     colcon build

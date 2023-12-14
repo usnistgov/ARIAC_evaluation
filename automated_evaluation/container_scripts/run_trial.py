@@ -61,8 +61,12 @@ def main():
                 os.remove('/tmp/sensor_cost.txt')
             shutil.copy(f'{sorted_by_mtime_descending}/score.txt', '/tmp/score.txt')
             shutil.copy(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
-            
             break
+        output = subprocess.check_output("gz topic -l",shell=True).decode("utf-8")
+
+        if output == '' or output.count('An instance of Gazebo is not running') > 0 :
+            print('Gazebo not running')
+            break 
 
     print(f"==== Trial {trial_name} completed")
 
