@@ -8,6 +8,7 @@ import yaml
 import time
 import glob
 import subprocess
+import shutil
 
 def main():
     # Get team file name
@@ -51,21 +52,11 @@ def main():
 
     files = glob.glob(os.path.expanduser("/workspace/src/ARIAC/ariac_log/*"))
     sorted_by_mtime_descending = sorted(files, key=lambda t: -os.stat(t).st_mtime)[0]
+    
     while True:
         if os.path.exists(f'{sorted_by_mtime_descending}/score.txt'):
-            # os.system(f"mv {sorted_by_mtime_descending}/score.txt /workspace/src/score.txt")
-            # os.system(f"mv {sorted_by_mtime_descending}/sensor_cost.txt /workspace/src/sensor_cost.txt")
-
-            # echo_cmd = f"cat {sorted_by_mtime_descending}/score.txt"
-            # subprocess.run(echo_cmd, shell=True)
-            # mv_cmd = f"mv {sorted_by_mtime_descending}/score.txt /workspace/src/score.txt"
-            # subprocess.run(mv_cmd, shell=True)
-
-            # subprocess.runl(["mv ", f'{sorted_by_mtime_descending}/sensor_cost.txt ', '/workspace/src/sensor_cost.txt'])
-            # process2 = Popen(["mv", f'{sorted_by_mtime_descending}/score.txt', "/workspace/src/score.txt"])
-            # time.sleep(10)
-            output = subprocess.check_output(["bash", "-c", "mv" + f'{sorted_by_mtime_descending}/score.txt ' + "/workspace/src/score.txt"])
-            print(output.decode("utf-8"))
+            shutil.move(f'{sorted_by_mtime_descending}/score.txt', '/workspace/src/score.txt')
+            shutil.move(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/workspace/src/sensor_cost.txt')
             break
 
     print(f"==== Trial {trial_name} completed")

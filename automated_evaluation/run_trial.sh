@@ -20,9 +20,8 @@ if [[ $2 ]] ; then
     echo "==== Running trial: $2"
     docker exec -it $teamName bash -c ". /container_scripts/run_trial.sh $1 $2"
     echo "==== Copying logs to"
-    echo $PWD
-    docker cp $teamname:/workspace/src/score.txt $PWD/ariac2024/logs/$teamname/score.txt
-    docker cp $teamname:/workspace/src/sensor_cost.txt $PWD/ariac2024/logs/$teamname/sensor_cost.txt
+    docker cp $teamName:/workspace/src/score.txt $PWD/ariac2024/logs/$teamName/score.txt
+    docker cp $teamName:/workspace/src/sensor_cost.txt $PWD/ariac2024/logs/$teamName/sensor_cost.txt
 fi
 
 if [[ ! $2 ]] ; then
