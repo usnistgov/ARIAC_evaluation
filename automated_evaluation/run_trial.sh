@@ -8,7 +8,7 @@ if [[ ! $1 ]] ; then
     exit 1
 fi
 
-teamName=$1
+# teamName=$1
 
 # Create a folder to copy log files from docker
 if [ ! -d /$PWD/logs/$teamName ]; then
@@ -16,34 +16,59 @@ if [ ! -d /$PWD/logs/$teamName ]; then
 fi
 
 
-if [[ $2 ]] ; then
-    echo "==== Running trial: $2"
-    flag=0
-    if [ ! -d /$PWD/logs/$teamName/$2 ]; then
-        mkdir -p /$PWD/logs/$teamName/$2/;
+# if [[ $2 ]] ; then
+#     echo "==== Running trial: $2"
+#     i=1
+#     if [ ! -d /$PWD/logs/$teamName/$2_$i ]; then
+#         mkdir -p /$PWD/logs/$teamName/$2_$i/;
+#     else
+#         while [ -d /$PWD/logs/$teamName/$2_$i ]; do
+#             let i++  
+#         done
+#         mkdir -p /$PWD/logs/$teamName/$2_$i/;
+#     fi
+#     docker exec -it $teamName bash -c ". /container_scripts/run_trial.sh $1 $2"
+#     echo "==== Copying logs to"
+
+#     docker cp $teamName:/tmp/score.txt $PWD/logs/$teamName/$2_$i/score.txt
+#     docker cp $teamName:/tmp/sensor_cost.txt $PWD/logs/$teamName/$2_$i/sensor_cost.txt
+
+# fi
+
+function run_trial() {
+    local teamname="$1"
+    local trialname="$2"
+    echo "$trialname"
+    echo "$teamname"
+    i=1;
+    if [ ! -d /$PWD/logs/$teamname/$trialname\_$i ]; then
+        mkdir -p /$PWD/logs/$teamname/$trialname\_$i/;
     else
-        i=2
-        flag=1
-        while [ -d /$PWD/logs/$teamName/$2_$i ]; do
-            let i++
+        while [ -d /$PWD/logs/$teamname/$trialname\_$i ]; do
+            let i++  
         done
-        mkdir -p /$PWD/logs/$teamName/$2_$i/;
+        mkdir -p /$PWD/logs/$teamname/$trialname\_$i/;
     fi
-    docker exec -it $teamName bash -c ". /container_scripts/run_trial.sh $1 $2"
+    docker exec -it $teamname bash -c ". /container_scripts/run_trial.sh $teamname $trialname"
     echo "==== Copying logs to"
-    if [ $flag -eq 0 ]; then
-        docker cp $teamName:/tmp/score.txt $PWD/logs/$teamName/$2/score.txt
-        docker cp $teamName:/tmp/sensor_cost.txt $PWD/logs/$teamName/$2/sensor_cost.txt
+    
+    docker cp $teamname:/tmp/score.txt $PWD/logs/$teamname/$trialname\_$i/score.txt
+    docker cp $teamname:/tmp/sensor_cost.txt $PWD/logs/$teamname/$trialname\_$i/sensor_cost.txt
+}
+
+
+# ##Different script to run all trials
+# #runalltrials.sh and takes arguments of number of trials to run
+if [[ "$2" != "run-all" ]] ; then
+    run_trial $1 $2
+
+else
+    if [[ ! $3 ]] ; then
+        iterations=1
     else
-        docker cp $teamName:/tmp/score.txt $PWD/logs/$teamName/$2_$i/score.txt
-        docker cp $teamName:/tmp/sensor_cost.txt $PWD/logs/$teamName/$2_$i/sensor_cost.txt
+        iterations=$3
     fi
-fi
-
-
-##Different script to run all trials
-#runalltrials.sh and takes arguments of number of trials to run
-if [[ ! $2 ]] ; then
+    
     echo "==== Running all trials from the trials directory"
     # absolute path of the current script
     trials_dir="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )" # https://stackoverflow.com/a/4774063/99379
@@ -55,9 +80,9 @@ if [[ ! $2 ]] ; then
         # e.g., kitting
         trial_name=${trial_file::-5}
 
-        docker exec -it $teamName bash -c ". /container_scripts/run_trial.sh $1 $trial_name"
-        echo "==== Copying logs to /tmp/.ariac2023/logs/$teamName"
-        # docker cp $teamName:/home/ubuntu/logs/$trial_name.txt /tmp/.ariac2023/logs/$teamName
+        for ((i=1;i<=iterations;i++)); do
+            run_trial $1 $trial_name
+        done
 
     done
 fi

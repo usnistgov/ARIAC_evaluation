@@ -75,7 +75,7 @@ def main():
     subprocess.run(rosdep_cmd, shell=True)
 
     # Build the workspace
-    build_cmd = f"colcon build --packages-select {team_name}"
+    build_cmd = "colcon build --packages-skip ariac_controllers ariac_description ariac_gui ariac_human ariac_moveit_config ariac_msgs ariac_plugins ariac_sensors test_competitor "
     subprocess.run(build_cmd, shell=True)
 
 
