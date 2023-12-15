@@ -20,7 +20,7 @@ RUN source /opt/ros/iron/setup.bash && \
     cd /workspace/src && \
     git clone https://github.com/usnistgov/ARIAC.git -b logging_updates && \
     cd /workspace && \
-    sudo rosdep update && \
+    rosdep update && \
     rosdep install --from-paths src --ignore-src -y && \
     rm -r /workspace/src/ARIAC/ariac_gazebo/config/trials && \
     colcon build
