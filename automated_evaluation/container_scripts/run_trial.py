@@ -35,18 +35,29 @@ def main():
         sys.exit()
 
     try:
-        launch_file = data["competition"]["launch_file"]
-        print('Launch_file: ', launch_file)
+        env_launch_file = data["competition"]["env_launch_file"]
+        print('Launch_file: ', env_launch_file)
+    except KeyError:
+        print("Unable to find launch_file")
+        sys.exit()
+
+    try:
+        competitor_launch_file = data["competition"]["competition_launch_file"]
+        print('Launch_file: ', competitor_launch_file)
     except KeyError:
         print("Unable to find launch_file")
         sys.exit()
 
     trial_name = sys.argv[2]
 
-    process = Popen(["ros2", "launch", package_name, launch_file, f"competitor_pkg:={package_name}",
+    # process = Popen(["ros2", "launch", package_name, launch_file, f"competitor_pkg:={package_name}",
+    #                 f"trial_name:={trial_name}", '--noninteractive'])
+
+    env_process = Popen(["ros2", "launch", package_name, env_launch_file, f"competitor_pkg:={package_name}",
                     f"trial_name:={trial_name}", '--noninteractive'])
 
-    
+    comp_process = Popen(["ros2", "launch", package_name, competitor_launch_file, f"competitor_pkg:={package_name}", 
+                         '--noninteractive'])
     # Continue execution of trial until log file is generated
     time.sleep(10)
 
@@ -67,9 +78,11 @@ def main():
     print(f"==== Trial {trial_name} completed")
 
     # process.send_signal(SIGTERM)
-    process.kill()
+    comp_process.send_signal(SIGTERM)
+    env_process.send_signal(SIGTERM)
     # Might raise a TimeoutExpired if it takes too long
-    return_code = process.wait(timeout=10)
+    return_code = comp_process.wait(timeout=10)
+    return_code = env_process.wait(timeout=10)
     print(f"return_code: {return_code}")
 
 if __name__ == "__main__":
