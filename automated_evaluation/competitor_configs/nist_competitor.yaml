@@ -4,7 +4,7 @@ team_name: "nist_competitor"
 
 github:
   repository: "github.com/usnistgov/nist_competitor.git"
-  tag: "2024.1.0"
+  # tag: "2024.1.0"
   personal_access_token: "****"
 
 build:
@@ -12,5 +12,6 @@ build:
 
 competition:
   package_name: "nist_competitor"
-  launch_file: "competition.launch.py"
+  env_launch_file: "competition.launch.py"
+  competition_launch_file: "competitor.launch.py"
 

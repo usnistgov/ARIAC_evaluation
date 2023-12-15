@@ -74,6 +74,17 @@ def main():
             shutil.copy(f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
             
             break
+    
+        output = subprocess.check_output(
+            "gz topic -l", shell=True).decode("utf-8")
+
+        if output == '' or output.count('An instance of Gazebo is not running') > 0:
+            print('Gazebo not running')
+            create_score_cmd = "echo 'Gazebo Crashed score not recorded' > /tmp/score.txt"
+            subprocess.run(create_score_cmd, shell=True)
+            shutil.copy(
+                f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
+            break
 
     print(f"==== Trial {trial_name} completed")
 

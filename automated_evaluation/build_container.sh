@@ -12,10 +12,10 @@ xhost +local:docker
 
 if [[ "$2" == "nvidia" ]] ; then
     # Build the docker image
-    docker run -t -d --name $teamName -e DISPLAY=$DISPLAY -e LOCAL_USER_ID=1000  --gpus=all --runtime=nvidia -e "NVIDIA_DRIVER_CAPABILITIES=all" --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw nistariac/ariac2024:dev
+    docker run -t -d --name $teamName -e DISPLAY=$DISPLAY -e LOCAL_USER_ID=1000  --gpus=all --runtime=nvidia -e "NVIDIA_DRIVER_CAPABILITIES=all" --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw nistariac/ariac2024:latest
 else
     # Build the docker image
-    docker run -t -d --name $teamName -e DISPLAY=$DISPLAY -e LOCAL_USER_ID=1000  --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw nistariac/ariac2024:dev
+    docker run -t -d --name $teamName -e DISPLAY=$DISPLAY -e LOCAL_USER_ID=1000  --network=host --pid=host --privileged -v /tmp/.X11-unix:/tmp/.X11-unix:rw  nistariac/ariac2024:latest
 fi
 
 # Copy scripts directory and yaml file
