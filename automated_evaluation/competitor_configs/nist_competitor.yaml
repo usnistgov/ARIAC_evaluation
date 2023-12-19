@@ -5,12 +5,12 @@ team_name: "nist_competitor"
 github:
   repository: "github.com/usnistgov/nist_competitor.git"
   # tag: "2024.1.0"
-  personal_access_token: "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"
+  personal_access_token: "****"
 
 build:
   pre_build_scripts: ["nist_competitor_pre_build.sh"]
 
 competition:
   package_name: "nist_competitor"
-  launch_file: "competition_crash.launch.py"
+  launch_file: "competition.launch.py"
 
