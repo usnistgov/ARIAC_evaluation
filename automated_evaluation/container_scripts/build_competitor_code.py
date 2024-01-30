@@ -52,10 +52,13 @@ def main():
         sys.exit()
     
     # Clone the repository
-    if not tag:
-        clone_cmd = f"git clone https://{token}@{repository} /workspace/src/{team_name}"
+    if team_name == "nist_competitor":
+        clone_cmd = f"git clone https://{repository} /workspace/src/{team_name} --branch {tag}"
     else:
-        clone_cmd = f"git clone https://{token}@{repository} /workspace/src/{team_name} --branch {tag}"
+        if not tag:
+            clone_cmd = f"git clone https://{token}@{repository} /workspace/src/{team_name}"
+        else:
+            clone_cmd = f"git clone https://{token}@{repository} /workspace/src/{team_name} --branch {tag}"
     
     subprocess.run(clone_cmd, shell=True)
 
@@ -75,7 +78,7 @@ def main():
     subprocess.run(rosdep_cmd, shell=True)
 
     # Build the workspace
-    build_cmd = "colcon build --packages-skip ariac_controllers ariac_description ariac_gui ariac_human ariac_moveit_config ariac_msgs ariac_plugins ariac_sensors test_competitor "
+    build_cmd = "colcon build --packages-skip ariac_controllers ariac_description ariac_gui ariac_moveit_config ariac_msgs ariac_plugins ariac_sensors"
     subprocess.run(build_cmd, shell=True)
 
 

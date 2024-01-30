@@ -42,6 +42,9 @@ def main():
         print("Unable to find launch_file")
         sys.exit()
 
+    if os.path.exists('/root/.ros/log'):
+        os.remove('/root/.ros/log')
+
     trial_name = sys.argv[2]
 
     process = Popen(["ros2", "launch", package_name, launch_file, f"trial_name:={trial_name}", '--noninteractive'])
@@ -50,30 +53,32 @@ def main():
     time.sleep(10)
 
     files = glob.glob(os.path.expanduser("/workspace/src/ARIAC/ariac_log/*"))
-    sorted_by_mtime_descending = sorted(
-        files, key=lambda t: -os.stat(t).st_mtime)[0]
+    current_log_path = sorted(files, key=lambda t: -os.stat(t).st_mtime)[0]
 
     while True:
-        if os.path.exists(f'{sorted_by_mtime_descending}/trial_log.txt'):
+        if os.path.exists(f'{current_log_path}/trial_log.txt'):
             if os.path.exists('/tmp/trial_log.txt'):
                 os.remove('/tmp/trial_log.txt')
             if os.path.exists('/tmp/sensor_cost.txt'):
                 os.remove('/tmp/sensor_cost.txt')
             shutil.copy(
-                f'{sorted_by_mtime_descending}/trial_log.txt', '/tmp/trial_log.txt')
+                f'{current_log_path}/trial_log.txt', '/tmp/trial_log.txt')
             shutil.copy(
-                f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
+                f'{current_log_path}/sensor_cost.txt', '/tmp/sensor_cost.txt')
             break
-        output = subprocess.check_output(
-            "gz topic -l", shell=True).decode("utf-8")
+        try:
+            output = subprocess.check_output(
+                "gz topic -l", shell=True).decode("utf-8")
 
-        if output == '' or output.count('An instance of Gazebo is not running') > 0:
-            print('Gazebo not running')
-            create_score_cmd = "echo 'Gazebo Crashed score not recorded' > /tmp/trial_log.txt"
-            subprocess.run(create_score_cmd, shell=True)
-            shutil.copy(
-                f'{sorted_by_mtime_descending}/sensor_cost.txt', '/tmp/sensor_cost.txt')
-            break
+            if output == '' or output.count('An instance of Gazebo is not running') > 0:
+                print('Gazebo not running')
+                create_score_cmd = "echo 'Gazebo Crashed score not recorded' > /tmp/trial_log.txt"
+                subprocess.run(create_score_cmd, shell=True)
+                shutil.copy(
+                    f'{current_log_path}/sensor_cost.txt', '/tmp/sensor_cost.txt')
+                break
+        except subprocess.CalledProcessError:
+            pass
 
     print(f"==== Trial {trial_name} completed")
 

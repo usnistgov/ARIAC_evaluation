@@ -28,10 +28,10 @@ function run_trial() {
     docker exec -it $teamname bash -c ". /container_scripts/run_trial.sh $teamname $trialname"
     echo "==== Copying logs to"
     
-    docker cp $teamname:/tmp/score.txt $PWD/logs/$teamname/$trialname\_$i/score.txt
+    docker cp $teamname:/tmp/trial_log.txt $PWD/logs/$teamname/$trialname\_$i/trial_log.txt
     docker cp $teamname:/tmp/sensor_cost.txt $PWD/logs/$teamname/$trialname\_$i/sensor_cost.txt
-    docker cp $teamname:/root/.gazebo/log/. $PWD/logs/$teamname/$trialname\_$i/stage/
-    docker cp $teamname:/root/.ros/log/latest/. $PWD/logs/$teamname/$trialname\_$i/ros_log/
+    # docker cp $teamname:/root/.gazebo/log/. $PWD/logs/$teamname/$trialname\_$i/stage/
+    docker cp $teamname:/root/.ros/log/. $PWD/logs/$teamname/$trialname\_$i/ros_log/
 }
 
 if [[ "$2" != "run-all" ]] ; then
