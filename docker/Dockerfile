@@ -18,7 +18,7 @@ RUN source /opt/ros/iron/setup.bash && \
     apt-get install python3-pip -y && \
     pip install setuptools==58.2.0 && \
     cd /workspace/src && \
-    git clone https://github.com/usnistgov/ARIAC.git -b logging_updates && \
+    git clone https://github.com/usnistgov/ARIAC.git -b ariac2024 && \
     cd /workspace && \
     rosdep update && \
     rosdep install --from-paths src --ignore-src -y && \
