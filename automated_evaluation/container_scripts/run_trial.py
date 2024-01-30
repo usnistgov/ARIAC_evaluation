@@ -42,8 +42,9 @@ def main():
         print("Unable to find launch_file")
         sys.exit()
 
-    if os.path.exists('/root/.ros/log'):
-        os.remove('/root/.ros/log')
+    # Clear ros log folder
+    if (os.path.exists('/root/.ros/log')):
+        shutil.rmtree('/root/.ros/log/')
 
     trial_name = sys.argv[2]
 
