@@ -30,7 +30,7 @@ function run_trial() {
     
     docker cp $teamname:/tmp/trial_log.txt $PWD/logs/$teamname/$trialname\_$i/trial_log.txt
     docker cp $teamname:/tmp/sensor_cost.txt $PWD/logs/$teamname/$trialname\_$i/sensor_cost.txt
-    # docker cp $teamname:/root/.gazebo/log/. $PWD/logs/$teamname/$trialname\_$i/stage/
+    docker cp $teamname:/tmp/state.log $PWD/logs/$teamname/$trialname\_$i/state.log
     docker cp $teamname:/root/.ros/log/. $PWD/logs/$teamname/$trialname\_$i/ros_log/
 }
 

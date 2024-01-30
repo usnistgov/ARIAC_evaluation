@@ -4,7 +4,7 @@ team_name: "nist_competitor"
 
 github:
   repository: "github.com/usnistgov/nist_competitor.git"
-  tag: "2024.2.1"
+  tag: "main"
   personal_access_token: ""
 
 build:

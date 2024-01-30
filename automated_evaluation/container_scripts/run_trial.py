@@ -62,10 +62,17 @@ def main():
                 os.remove('/tmp/trial_log.txt')
             if os.path.exists('/tmp/sensor_cost.txt'):
                 os.remove('/tmp/sensor_cost.txt')
+            if os.path.exists('/tmp/state.log'):
+                os.remove('/tmp/state.log')
             shutil.copy(
                 f'{current_log_path}/trial_log.txt', '/tmp/trial_log.txt')
             shutil.copy(
                 f'{current_log_path}/sensor_cost.txt', '/tmp/sensor_cost.txt')
+            state_log_files = glob.glob(os.path.expanduser("/root/.gazebo/log/*"))
+            current_gazebo_log_path = sorted(state_log_files, key=lambda t: -os.stat(t).st_mtime)[0]
+            if os.path.exists(current_gazebo_log_path + '/gzserver/state.log'):
+                shutil.copy(
+                f'{current_gazebo_log_path}/gzserver/state.log', '/tmp/state.log')
             break
         try:
             output = subprocess.check_output(
