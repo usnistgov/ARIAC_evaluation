@@ -35,7 +35,15 @@ function run_trial() {
 }
 
 if [[ "$2" != "run-all" ]] ; then
-    run_trial $1 $2
+    if [[ ! $3 ]] ; then
+        echo "==== Running trial $2 1 time"
+        run_trial $1 $2
+    else
+        echo "==== Running trial $2 $3 times"
+        for ((i=1;i<=$3;i++)); do
+            run_trial $1 $2
+        done
+    fi
 
 else
     if [[ ! $3 ]] ; then
