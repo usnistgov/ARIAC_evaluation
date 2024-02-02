@@ -16,22 +16,22 @@ fi
 function run_trial() {
     local teamname="$1"
     local trialname="$2"
-    i=1;
-    if [ ! -d /$PWD/logs/$teamname/$trialname\_$i ]; then
-        mkdir -p /$PWD/logs/$teamname/$trialname\_$i/;
+    local j=1
+    if [ ! -d /$PWD/logs/$teamname/$trialname\_$j ]; then
+        mkdir -p /$PWD/logs/$teamname/$trialname\_$j/;
     else
-        while [ -d /$PWD/logs/$teamname/$trialname\_$i ]; do
-            let i++  
+        while [ -d /$PWD/logs/$teamname/$trialname\_$j ]; do
+            let j++  
         done
-        mkdir -p /$PWD/logs/$teamname/$trialname\_$i/;
+        mkdir -p /$PWD/logs/$teamname/$trialname\_$j/;
     fi
     docker exec -it $teamname bash -c ". /container_scripts/run_trial.sh $teamname $trialname"
     echo "==== Copying logs to"
     
-    docker cp $teamname:/tmp/trial_log.txt $PWD/logs/$teamname/$trialname\_$i/trial_log.txt
-    docker cp $teamname:/tmp/sensor_cost.txt $PWD/logs/$teamname/$trialname\_$i/sensor_cost.txt
-    docker cp $teamname:/tmp/state.log $PWD/logs/$teamname/$trialname\_$i/state.log
-    docker cp $teamname:/root/.ros/log/. $PWD/logs/$teamname/$trialname\_$i/ros_log/
+    docker cp $teamname:/tmp/trial_log.txt $PWD/logs/$teamname/$trialname\_$j/trial_log.txt
+    docker cp $teamname:/tmp/sensor_cost.txt $PWD/logs/$teamname/$trialname\_$j/sensor_cost.txt
+    docker cp $teamname:/tmp/state.log $PWD/logs/$teamname/$trialname\_$j/state.log
+    docker cp $teamname:/root/.ros/log/. $PWD/logs/$teamname/$trialname\_$j/ros_log/
 }
 
 if [[ "$2" != "run-all" ]] ; then
