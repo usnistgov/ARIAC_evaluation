@@ -21,7 +21,6 @@ function run_trial() {
         mkdir -p /$PWD/logs/$teamname/$trialname\_$j/;
     else
         while [ -d /$PWD/logs/$teamname/$trialname\_$j ]; do
-            echo "==== inside while"
             let j++  
         done
         mkdir -p /$PWD/logs/$teamname/$trialname\_$j/;
