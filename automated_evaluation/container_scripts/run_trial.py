@@ -45,6 +45,11 @@ def main():
     # Clear ros log folder
     if (os.path.exists('/root/.ros/log')):
         shutil.rmtree('/root/.ros/log/')
+    
+    # Clears the tmp directory
+    for file_path in ["/tmp/"+file_name for file_name in ["trial_log.txt","sensor_cost.txt","state.log"]]:
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
     trial_name = sys.argv[2]
 
